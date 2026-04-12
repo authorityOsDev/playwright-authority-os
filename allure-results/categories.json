@@ -1,0 +1,17 @@
+[
+  {
+    "name": "Critical Product Defects",
+    "matchedStatuses": ["failed"],
+    "messageRegex": ".*expect.*" 
+  },
+  {
+    "name": "Infrastructure / Timeouts",
+    "matchedStatuses": ["broken"],
+    "messageRegex": ".*timeout.*|.*Navigation failed.*"
+  },
+  {
+    "name": "Flaky Tests",
+    "matchedStatuses": ["failed", "broken"],
+    "flaky": true
+  }
+]
