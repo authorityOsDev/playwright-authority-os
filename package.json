@@ -9,9 +9,14 @@
   "license": "ISC",
   "type": "commonjs",
   "devDependencies": {
+    "@eslint/js": "^10.0.1",
     "@playwright/test": "^1.59.1",
     "@types/node": "^25.6.0",
-    "allure-playwright": "^3.7.1"
+    "@typescript-eslint/eslint-plugin": "^8.58.1",
+    "@typescript-eslint/parser": "^8.58.1",
+    "allure-playwright": "^3.7.1",
+    "eslint": "^10.2.0",
+    "typescript-eslint": "^8.58.1"
   },
   "dependencies": {
     "dotenv": "^17.4.1"

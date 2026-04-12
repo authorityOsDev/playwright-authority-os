@@ -1,4 +1,4 @@
-import { request, APIRequestContext, test } from '@playwright/test';
+import { request, test } from '@playwright/test';
 
 export class ApiRequest {
   /**

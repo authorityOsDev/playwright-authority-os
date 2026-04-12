@@ -1,4 +1,4 @@
-import { request, APIRequestContext } from '@playwright/test';
+import { request } from '@playwright/test';
 
 export class ApiHelper {
   /**

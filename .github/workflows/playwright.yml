@@ -4,41 +4,54 @@ on:
     branches: [ main, master ]
   pull_request:
     branches: [ main, master ]
-  workflow_dispatch: # Allows manual trigger from GitHub UI
 
 jobs:
+  # Job 1: Check code quality before running tests
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+      - name: Install dependencies
+        run: npm ci
+      - name: Run ESLint
+        run: npx eslint . --ext .ts
+
+  # Job 2: Run tests in parallel (Matrix Strategy)
   test:
+    needs: lint # Start tests only if linting passes
     timeout-minutes: 60
     runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        project: [chromium, firefox, webkit] # Multi-browser execution
     
     steps:
     - uses: actions/checkout@v4
-
     - name: Setup Node.js
       uses: actions/setup-node@v4
       with:
         node-version: 20
         cache: 'npm'
-
     - name: Install dependencies
       run: npm ci
-
     - name: Install Playwright Browsers
       run: npx playwright install --with-deps
-
     - name: Run Playwright tests
-      run: npx playwright test
+      run: npx playwright test --project=${{ matrix.project }}
       env:
-        # Authority Rule: Secrets are injected from GitHub Settings, not .env file
         BASE_URL: ${{ secrets.BASE_URL }}
         STANDARD_USER: ${{ secrets.STANDARD_USER }}
         PASSWORD: ${{ secrets.PASSWORD }}
-        ENV: staging
 
     - name: Upload HTML Report
       uses: actions/upload-artifact@v4
       if: always()
       with:
-        name: playwright-report
+        name: playwright-report-${{ matrix.project }}
         path: playwright-report/
         retention-days: 30
