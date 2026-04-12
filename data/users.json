@@ -1,0 +1,22 @@
+[
+  {
+    "id": "POSITIVE_LOGIN",
+    "username": "standard_user",
+    "expectedPath": "/inventory.html",
+    "description": "Valid user should access inventory"
+  },
+  {
+    "id": "LOCKED_USER",
+    "username": "locked_out_user",
+    "expectedPath": "/",
+    "errorExpected": true,
+    "description": "Locked user should see error message"
+  },
+  {
+    "id": "NON_EXISTENT_USER",
+    "username": "ghost_user",
+    "expectedPath": "/",
+    "errorExpected": true,
+    "description": "Invalid credentials should be rejected"
+  }
+]

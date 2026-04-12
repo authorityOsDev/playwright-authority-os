@@ -1,0 +1,2 @@
+API Request executed through Authority Wrapper
+✅ Hybrid flow: Backend logic integrated.
