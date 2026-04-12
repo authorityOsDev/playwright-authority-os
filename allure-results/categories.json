@@ -1,17 +1,22 @@
 [
   {
-    "name": "Critical Product Defects",
+    "name": "🔴 Critical Product Defects (UI/Logic)",
     "matchedStatuses": ["failed"],
     "messageRegex": ".*expect.*" 
   },
   {
-    "name": "Infrastructure / Timeouts",
-    "matchedStatuses": ["broken"],
-    "messageRegex": ".*timeout.*|.*Navigation failed.*"
+    "name": "🟠 API & Data Integrity Issues",
+    "matchedStatuses": ["failed"],
+    "messageRegex": ".*api.*|.*status.*"
   },
   {
-    "name": "Flaky Tests",
+    "name": "🧪 Flaky Tests (Require Attention)",
     "matchedStatuses": ["failed", "broken"],
     "flaky": true
+  },
+  {
+    "name": "⏳ Infrastructure Timeouts",
+    "matchedStatuses": ["broken"],
+    "messageRegex": ".*timeout.*|.*Navigation failed.*"
   }
 ]
