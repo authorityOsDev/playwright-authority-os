@@ -11,7 +11,10 @@
     "test:ci": "playwright test --project=chromium",
     "report:generate": "allure generate ./allure-results --clean",
     "report:open": "allure open",
-    "lint": "eslint ."
+    "lint": "eslint .",
+    "report:notion": "npx ts-node utils/notion-update.ts",
+    "test:json": "mkdir -p test-results && playwright test",
+    "ship-it": "npm run test:json && npm run report:notion"
   },
   "keywords": [
     "playwright",
@@ -33,10 +36,12 @@
     "@typescript-eslint/parser": "^8.58.1",
     "allure-playwright": "^3.7.1",
     "eslint": "^10.2.0",
+    "ts-node": "^10.9.2",
+    "typescript": "^6.0.3",
     "typescript-eslint": "^8.58.1"
   },
   "dependencies": {
     "@notionhq/client": "^5.19.0",
-    "dotenv": "^17.4.1"
+    "dotenv": "^17.4.2"
   }
 }

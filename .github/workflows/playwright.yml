@@ -1,4 +1,5 @@
 name: Playwright Authority OS CI
+
 on:
   push:
     branches: [ main, master ]
@@ -6,7 +7,7 @@ on:
     branches: [ main, master ]
 
 jobs:
-  # Job 1: Quality & Security Gate
+  # ─── Job 1: Quality & Security Gate ───────────────────────────────────────
   quality-gate:
     runs-on: ubuntu-latest
     steps:
@@ -18,42 +19,111 @@ jobs:
       - name: Install dependencies
         run: npm ci
       - name: Run ESLint
-        run: npx eslint . 
+        run: npx eslint .
       - name: Security Scan
         run: npm audit --audit-level=high
 
-  # Job 2: Run tests in parallel (Matrix Strategy)
+  # ─── Job 2: Run tests in parallel (Matrix Strategy) ───────────────────────
   test:
-    needs: quality-gate 
+    needs: quality-gate
     timeout-minutes: 60
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
       matrix:
         project: [chromium, firefox, webkit]
-    
-    steps:
-    - uses: actions/checkout@v4
-    - name: Setup Node.js
-      uses: actions/setup-node@v4
-      with:
-        node-version: 20
-        cache: 'npm'
-    - name: Install dependencies
-      run: npm ci  
-    - name: Install Playwright Browsers
-      run: npx playwright install --with-deps
-    - name: Run Playwright tests
-      run: npx playwright test --project=${{ matrix.project }}
-      env:
-        BASE_URL: ${{ secrets.BASE_URL }}
-        STANDARD_USER: ${{ secrets.STANDARD_USER }}
-        PASSWORD: ${{ secrets.PASSWORD }}
 
-    - name: Upload HTML Report
-      uses: actions/upload-artifact@v4
-      if: always()
-      with:
-        name: playwright-report-${{ matrix.project }}
-        path: playwright-report/
-        retention-days: 30
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Install Playwright Browsers
+        run: npx playwright install --with-deps
+
+      - name: Run Playwright tests
+        run: npx playwright test --project=${{ matrix.project }}
+        env:
+          BASE_URL: ${{ secrets.BASE_URL }}
+          STANDARD_USER: ${{ secrets.STANDARD_USER }}
+          PASSWORD: ${{ secrets.PASSWORD }}
+
+      - name: Upload Allure results
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: allure-results-${{ matrix.project }}
+          path: allure-results/
+          retention-days: 7
+
+      - name: Upload HTML report
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: playwright-report-${{ matrix.project }}
+          path: playwright-report/
+          retention-days: 30
+
+      - name: Upload test results (chromium only — used by Notion)
+        uses: actions/upload-artifact@v4
+        if: always() && matrix.project == 'chromium'
+        with:
+          name: test-results-json
+          path: test-results/results.json
+          retention-days: 7
+
+  # ─── Job 3: Generate Allure Report & Publish to GitHub Pages ──────────────
+  publish:
+    needs: test
+    runs-on: ubuntu-latest
+    if: always()
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Download all Allure results
+        uses: actions/download-artifact@v4
+        with:
+          pattern: allure-results-*
+          path: allure-results-combined/
+          merge-multiple: true
+
+      - name: Generate merged Allure report
+        run: npx allure generate allure-results-combined --clean -o allure-report
+
+      - name: Deploy Allure report to Surge
+        run: |
+          npm install -g surge
+          surge ./allure-report https://authority-os-report.surge.sh --token ${{ secrets.SURGE_TOKEN }}
+
+      - name: Download test results JSON
+        uses: actions/download-artifact@v4
+        with:
+          name: test-results-json
+          path: test-results/
+
+      - name: Update Notion Dashboard
+        env:
+          NOTION_TOKEN: ${{ secrets.NOTION_TOKEN }}
+          NOTION_DATABASE_ID: ${{ secrets.NOTION_DATABASE_ID }}
+          GITHUB_RUN_NUMBER: ${{ github.run_number }}
+          GITHUB_RUN_ID: ${{ github.run_id }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+          GITHUB_SERVER_URL: ${{ github.server_url }}
+        run: npx ts-node utils/notion-update.ts

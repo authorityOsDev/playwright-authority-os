@@ -13,7 +13,8 @@
       "@pages/*": ["pages/*"],
       "@utils/*": ["utils/*"],
       "@data/*": ["data/*"]
-    }
+    },
+    "types": ["node", "@playwright/test"],
   },
   "include": [
     "tests/**/*.ts",
