@@ -1,0 +1,29 @@
+{
+  "mcpServerName": "Authority OS Agentic Toolset",
+  "version": "1.0.0",
+  "tools": [
+    {
+      "name": "execute_test_suite",
+      "description": "Executes all Playwright tests in the project and returns the output to the console.",
+      "command": "npx playwright test"
+    },
+    {
+      "name": "run_specific_test",
+      "description": "Runs a specific test file.",
+      "parameters": {
+        "file": "string (e.g., login.spec.ts)"
+      },
+      "command": "npx playwright test {file}"
+    },
+    {
+      "name": "analyze_logs",
+      "description": "Reads the latest test results from the test-results directory for failure analysis.",
+      "command": "cat test-results/.last-run.log"
+    },
+    {
+      "name": "generate_report",
+      "description": "Generates an Allure Report and prepares a link for viewing.",
+      "command": "npx allure generate --clean && npx allure open"
+    }
+  ]
+}
