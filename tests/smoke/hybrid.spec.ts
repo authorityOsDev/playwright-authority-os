@@ -1,7 +1,7 @@
 import { test, expect } from '@playwright/test';
 import { EnvFactory } from '../../utils/env-factory';
 
-test.describe('Hybrid Testing: API Setup + UI Verification', () => {
+test.describe('Hybrid Testing: API Setup + UI Verification', { tag: '@smoke' }, () => {
   
   test('Should verify inventory consistency between API and UI', async ({ page }) => {
     

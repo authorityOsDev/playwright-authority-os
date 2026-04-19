@@ -3,7 +3,7 @@ import { LoginPage } from '../../pages/login.page';
 import { EnvFactory } from '../../utils/env-factory';
 import testData from '../../data/users.json';
 
-test.describe('Data-Driven Authentication Suite', () => {
+test.describe('Data-Driven Authentication Suite', { tag: '@smoke' }, () => {
   // Logic to iterate through all scenarios in the JSON file
   for (const scenario of testData) {
     

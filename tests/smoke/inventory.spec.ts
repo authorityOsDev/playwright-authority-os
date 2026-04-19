@@ -1,6 +1,6 @@
 import { test, expect } from '@playwright/test';
 
-test.describe('Inventory Dashboard', () => {
+test.describe('Inventory Dashboard', { tag: '@smoke' }, () => {
   
   test.beforeEach(async ({ page }) => {
     // Navigate directly to the protected page
