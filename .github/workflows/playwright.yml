@@ -105,7 +105,7 @@ jobs:
           merge-multiple: true
 
       - name: Generate merged Allure report
-        run: npx allure generate allure-results-combined --clean -o allure-report
+        run: npx allure generate allure-results-combined -o allure-report
 
       - name: Deploy Allure report to Surge
         run: |

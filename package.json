@@ -9,7 +9,7 @@
     "test:headed": "playwright test --headed",
     "test:debug": "playwright test --debug",
     "test:ci": "playwright test --project=chromium",
-    "report:generate": "allure generate ./allure-results --clean",
+    "report:generate": "allure generate ./allure-results -o allure-report",
     "report:open": "allure open",
     "lint": "eslint .",
     "report:notion": "npx ts-node utils/notion-update.ts",
