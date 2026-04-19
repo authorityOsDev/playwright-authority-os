@@ -1,7 +1,7 @@
 import { test, expect } from '@playwright/test';
-import { LoginPage } from '../../pages/login.page';
-import { EnvFactory } from '../../utils/env-factory';
-import testData from '../../data/users.json';
+import { LoginPage } from '@pages/login.page';
+import { EnvFactory } from '@utils/env-factory';
+import testData from '@data/users.json';
 
 test.describe('Data-Driven Authentication Suite', { tag: '@smoke' }, () => {
   // Logic to iterate through all scenarios in the JSON file
@@ -21,9 +21,7 @@ test.describe('Data-Driven Authentication Suite', { tag: '@smoke' }, () => {
 
       // Assertions based on data-driven expectations
       if (scenario.errorExpected) {
-        // We assume your LoginPage has an errorMessage locator
-        const error = page.locator('[data-test="error"]');
-        await expect(error).toBeVisible();
+        await expect(loginPage.errorMessage).toBeVisible();
       } else {
         await expect(page).toHaveURL(new RegExp(scenario.expectedPath));
       }

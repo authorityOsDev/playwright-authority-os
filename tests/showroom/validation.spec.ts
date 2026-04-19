@@ -1,13 +1,22 @@
-import test, { expect } from "@playwright/test";
+import { test, expect } from '@playwright/test';
+import { CartPage } from '@pages/cart.page';
+import { CheckoutPage } from '@pages/checkout.page';
 
-test('Should show error when checkout info is missing', async ({ page }) => {
-  await page.goto('/cart.html');
-  await page.locator('[data-test="checkout"]').click();
-  
-  // Click continue without filling data
-  await page.locator('[data-test="continue"]').click();
+test.describe('Checkout Validation', () => {
 
-  const errorMsg = page.locator('[data-test="error"]');
-  await expect(errorMsg).toBeVisible();
-  await expect(errorMsg).toContainText('Error: First Name is required');
+  test('Should show error when checkout info is missing', async ({ page }) => {
+    const cartPage = new CartPage(page);
+    const checkoutPage = new CheckoutPage(page);
+
+    // Arrange — navigate to cart and proceed to checkout step
+    await cartPage.goto();
+    await cartPage.proceedToCheckout();
+
+    // Act — attempt to continue without filling any customer info
+    await checkoutPage.submitWithoutData();
+
+    // Assert — validation error is displayed
+    await expect(checkoutPage.errorMessage).toBeVisible();
+    await expect(checkoutPage.errorMessage).toContainText('First Name is required');
+  });
 });

@@ -1,16 +1,19 @@
 import { test, expect } from '@playwright/test';
+import { InventoryPage } from '@pages/inventory.page';
 
-test('Should sort products by price (Low to High)', async ({ page }) => {
-  await page.goto('/inventory.html');
+test.describe('Inventory Sorting', () => {
 
-  // Select sorting option
-  await page.locator('[data-test="product-sort-container"]').selectOption('lohi');
+  test('Should sort products by price (Low to High)', async ({ page }) => {
+    const inventoryPage = new InventoryPage(page);
 
-  // Verify first and last item prices
-  const prices = page.locator('.inventory_item_price');
-  const firstPrice = await prices.first().innerText();
-  const lastPrice = await prices.last().innerText();
+    // Arrange
+    await inventoryPage.goto();
 
-  // Professional assertion: verify sorting logic
-  expect(parseFloat(firstPrice.replace('$', ''))).toBeLessThan(parseFloat(lastPrice.replace('$', '')));
+    // Act
+    await inventoryPage.sortBy('lohi');
+
+    // Assert — first price is numerically lower than last price
+    const prices = await inventoryPage.getItemPrices();
+    expect(prices.at(0)).toBeLessThan(prices.at(-1)!);
+  });
 });

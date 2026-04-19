@@ -1,5 +1,5 @@
 import { test as setup, expect } from '@playwright/test';
-import { LoginPage } from '../pages/login.page';
+import { LoginPage } from '@pages/login.page';
 import { STORAGE_STATE } from '../playwright.config'; // Import the path from config
 
 setup('authenticate', async ({ page }) => {
@@ -9,8 +9,9 @@ setup('authenticate', async ({ page }) => {
   await loginPage.login(process.env.STANDARD_USER!, process.env.PASSWORD!);
 
   // AUTHORITY RULE: Wait for a specific element that proves login is finished
-  const inventoryList = page.locator('.inventory_list');
-  await expect(inventoryList).toBeVisible({ timeout: 10000 });
+  // URL reaching /inventory.html is the canonical proof of successful authentication
+  await expect(page).toHaveURL(/inventory\.html/, { timeout: 10000 });
+  await expect(page.getByTestId('product-sort-container')).toBeVisible();
 
   // Wait for network to be completely quiet
   await page.waitForLoadState('networkidle');

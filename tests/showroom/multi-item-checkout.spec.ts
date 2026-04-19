@@ -1,8 +1,8 @@
 // Scenario: Multi-item Checkout — adds two products and completes the full purchase flow
 import { test, expect } from '@playwright/test';
-import { InventoryPage } from '../../pages/inventory.page';
-import { CartPage } from '../../pages/cart.page';
-import { CheckoutPage } from '../../pages/checkout.page';
+import { InventoryPage } from '@pages/inventory.page';
+import { CartPage } from '@pages/cart.page';
+import { CheckoutPage } from '@pages/checkout.page';
 
 test.describe('E2E: Multi-item Checkout', { tag: '@smoke' }, () => {
 

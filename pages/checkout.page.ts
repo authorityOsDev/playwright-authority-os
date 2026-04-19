@@ -1,5 +1,5 @@
 import { Locator, Page } from '@playwright/test';
-import { BasePage } from './base.page';
+import { BasePage } from '@pages/base.page';
 
 export class CheckoutPage extends BasePage {
   readonly firstNameInput: Locator;
@@ -8,15 +8,17 @@ export class CheckoutPage extends BasePage {
   readonly continueButton: Locator;
   readonly finishButton: Locator;
   readonly successHeader: Locator;
+  readonly errorMessage: Locator;
 
   constructor(page: Page) {
     super(page);
-    this.firstNameInput = page.locator('[data-test="firstName"]');
-    this.lastNameInput = page.locator('[data-test="lastName"]');
-    this.postalCodeInput = page.locator('[data-test="postalCode"]');
-    this.continueButton = page.locator('[data-test="continue"]');
-    this.finishButton = page.locator('[data-test="finish"]');
-    this.successHeader = page.locator('.complete-header');
+    this.firstNameInput = page.getByTestId('firstName');
+    this.lastNameInput = page.getByTestId('lastName');
+    this.postalCodeInput = page.getByTestId('postalCode');
+    this.continueButton = page.getByTestId('continue');
+    this.finishButton = page.getByTestId('finish');
+    this.successHeader = page.getByRole('heading', { name: 'Thank you for your order!' });
+    this.errorMessage = page.getByTestId('error');
   }
 
   async fillCustomerInfo(firstName: string, lastName: string, postalCode: string) {
@@ -28,5 +30,9 @@ export class CheckoutPage extends BasePage {
 
   async finish() {
     await this.clickElement(this.finishButton, 'Finish Button');
+  }
+
+  async submitWithoutData() {
+    await this.clickElement(this.continueButton, 'Continue (without customer info)');
   }
 }

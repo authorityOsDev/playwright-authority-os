@@ -1,19 +1,21 @@
 import { test, expect } from '@playwright/test';
-import { EnvFactory } from '../../utils/env-factory';
+import { EnvFactory } from '@utils/env-factory';
+import { ApiRequest } from '@utils/api.request';
+import { InventoryPage } from '@pages/inventory.page';
 
 test.describe('Hybrid Testing: API Setup + UI Verification', { tag: '@smoke' }, () => {
-  
-  test('Should verify inventory consistency between API and UI', async ({ page }) => {
-    
-    await test.step('Backend Check: Fetch products via API', async () => {
-       
-       console.log('API Request executed through Authority Wrapper');
-    });
 
-    await page.goto(`${EnvFactory.baseUrl}/inventory.html`);
-    const items = page.locator('.inventory_item');
-    await expect(items).toHaveCount(6);
-    
-    console.log('✅ Hybrid flow: Backend logic integrated.');
+  test('Should verify inventory consistency between API and UI', async ({ page }) => {
+    const inventoryPage = new InventoryPage(page);
+
+    // Arrange — API pre-check: confirm the target environment is reachable
+    const response = await ApiRequest.get(EnvFactory.baseUrl);
+    expect(response.ok()).toBeTruthy();
+
+    // Act — navigate to inventory via UI
+    await inventoryPage.goto();
+
+    // Assert — UI product count matches expected catalog size
+    await expect(inventoryPage.items).toHaveCount(6);
   });
 });

@@ -1,5 +1,5 @@
 import { Locator, Page } from '@playwright/test';
-import { BasePage } from './base.page';
+import { BasePage } from '@pages/base.page';
 
 export class ComponentsPage extends BasePage {
   // Let's imagine a page with a nested iFrame for payments

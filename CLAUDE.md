@@ -2,11 +2,14 @@
 
 ## Build & Test Commands
 - Install dependencies: `npm install`
-- Run all tests: `npx playwright test`
+- Run all tests: `npm test`
+- Run smoke tests: `npm run test:smoke`
 - Run specific test: `npx playwright test <file-path>`
-- Run smoke tests: `npx playwright test --grep @smoke`
-- Generate report: `npx allure generate ./allure-results --clean`
-- View report: `npx allure open`
+- Run headed (visible browser): `npm run test:headed`
+- Debug mode: `npm run test:debug`
+- Generate Allure report: `npm run report:generate`
+- Open Allure report: `npm run report:open`
+- Lint: `npm run lint`
 
 ## Code Style & Architecture
 - **Framework:** Playwright with TypeScript.
@@ -18,8 +21,8 @@
 - **Assertions:** Use web-first assertions (e.g., `await expect(locator).toBeVisible()`).
 
 ## Error Handling
-- If tests fail, check `test-results/` for traces.
-- Use `analyze_logs` tool (as defined in mcp-authority.json) to parse terminal output.
+- If tests fail, check `test-results/` for traces: `npx playwright show-trace test-results/**/trace.zip`
+- For a full list of CLI commands, see `authority-tools.json` (command reference card).
 - When fixing code, always verify that the fix doesn't break existing `auth.setup.ts` logic.
 
 ## AI Prompt Library

@@ -1,16 +1,21 @@
 import { test, expect } from '@playwright/test';
-import { ApiRequest } from '../../utils/api.request';
+import { ApiRequest } from '@utils/api.request';
+import { EnvFactory } from '@utils/env-factory';
+import { InventoryPage } from '@pages/inventory.page';
 
-test('Verification of product catalog integrity via API-UI hybrid check', async ({ page }) => {
-  // In a real Authority OS, we fetch metadata before UI assertions
-  await test.step('Fetch Catalog Metadata', async () => {
-    // Using our custom wrapper to log API call in the report
-    await ApiRequest.get('https://www.saucedemo.com/inventory.html');
+test.describe('API-UI Hybrid: Product Catalog Integrity', () => {
+
+  test('Verification of product catalog integrity via API-UI hybrid check', async ({ page }) => {
+    const inventoryPage = new InventoryPage(page);
+
+    // Arrange — confirm the environment is reachable before running UI assertions
+    const response = await ApiRequest.get(EnvFactory.baseUrl);
+    expect(response.ok()).toBeTruthy();
+
+    // Act — navigate to inventory via UI
+    await inventoryPage.goto();
+
+    // Assert — product count matches expected catalog size
+    await expect(inventoryPage.items).toHaveCount(6);
   });
-
-  await page.goto('/inventory.html');
-  const items = page.locator('.inventory_item');
-  
-  // High-level business assertion
-  await expect(items).toHaveCount(6);
 });

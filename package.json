@@ -1,11 +1,28 @@
 {
   "name": "playwright-authority-os",
   "version": "1.0.0",
-  "description": "",
+  "description": "Authority OS — AI-Native Playwright Framework with strict POM, cross-browser CI, and Allure reporting",
   "main": "index.js",
-  "scripts": {},
-  "keywords": [],
-  "author": "",
+  "scripts": {
+    "test": "playwright test",
+    "test:smoke": "playwright test --grep @smoke",
+    "test:headed": "playwright test --headed",
+    "test:debug": "playwright test --debug",
+    "test:ci": "playwright test --project=chromium",
+    "report:generate": "allure generate ./allure-results --clean",
+    "report:open": "allure open",
+    "lint": "eslint ."
+  },
+  "keywords": [
+    "playwright",
+    "typescript",
+    "e2e",
+    "pom",
+    "testing",
+    "automation",
+    "ai"
+  ],
+  "author": "AuthorityOS Dev",
   "license": "ISC",
   "type": "commonjs",
   "devDependencies": {
@@ -19,6 +36,7 @@
     "typescript-eslint": "^8.58.1"
   },
   "dependencies": {
+    "@notionhq/client": "^5.19.0",
     "dotenv": "^17.4.1"
   }
 }

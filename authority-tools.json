@@ -1,0 +1,37 @@
+{
+  "name": "Authority OS — Command Reference",
+  "version": "1.0.0",
+  "description": "Quick reference for all CLI commands available in this framework. Use these with your AI agent or run them directly in a terminal.",
+  "commands": [
+    {
+      "name": "execute_test_suite",
+      "description": "Runs the full test suite across all browsers.",
+      "run": "npm test"
+    },
+    {
+      "name": "run_smoke_tests",
+      "description": "Runs only tests tagged @smoke — the critical business path.",
+      "run": "npm run test:smoke"
+    },
+    {
+      "name": "run_specific_test",
+      "description": "Runs a single test file. Replace <file> with the path.",
+      "run": "npx playwright test <file>"
+    },
+    {
+      "name": "analyze_logs",
+      "description": "Opens the last trace for failure analysis.",
+      "run": "npx playwright show-trace test-results/**/trace.zip"
+    },
+    {
+      "name": "generate_report",
+      "description": "Generates and opens the Allure report from the last run.",
+      "run": "npm run report:generate && npm run report:open"
+    },
+    {
+      "name": "lint",
+      "description": "Runs ESLint across the entire codebase.",
+      "run": "npm run lint"
+    }
+  ]
+}

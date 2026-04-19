@@ -27,6 +27,8 @@ export default defineConfig({
 
   use: {
     baseURL: EnvFactory.baseUrl || 'https://www.saucedemo.com',
+    // saucedemo uses data-test, not the Playwright default data-testid
+    testIdAttribute: 'data-test',
     trace: 'retain-on-failure',
     screenshot: 'only-on-failure',
     video: 'on-first-retry',

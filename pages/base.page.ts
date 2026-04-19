@@ -37,9 +37,10 @@ export class BasePage {
       await this.page.waitForLoadState('domcontentloaded');
     });
   }
-/**
+
+  /**
    * Authority Wrapper: Click with Retry
-   * Use this for stubborn elements that might not be ready for JS events 
+   * Use this for stubborn elements that might not be ready for JS events
    * even if they are visible.
    */
   protected async clickWithRetry(locator: Locator, name: string, retries = 3) {
@@ -66,7 +67,7 @@ export class BasePage {
 
   /**
    * Shadow DOM Input Wrapper
-   * Playwright handles Shadow DOM automatically, but this ensures 
+   * Playwright handles Shadow DOM automatically, but this ensures
    * we handle it with our standard logging and waiting.
    */
   protected async fillShadowField(selector: string, value: string, name: string) {
@@ -76,7 +77,7 @@ export class BasePage {
     });
   }
 
-/**
+  /**
    * Reliable Drag and Drop
    * Essential for modern dashboards and Kanban boards.
    */
