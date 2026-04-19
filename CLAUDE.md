@@ -21,3 +21,8 @@
 - If tests fail, check `test-results/` for traces.
 - Use `analyze_logs` tool (as defined in mcp-authority.json) to parse terminal output.
 - When fixing code, always verify that the fix doesn't break existing `auth.setup.ts` logic.
+
+## AI Prompt Library
+- Guidelines for generating code are located in `.authority/prompts/`.
+- Use `page-object-creator.md` when adding new UI components.
+- Use `test-generator.md` for implementing new test scenarios.
