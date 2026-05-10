@@ -4,82 +4,57 @@ export class BasePage {
   constructor(protected page: Page) {}
 
   /**
-   * Enhanced click action with automatic logging for reporting
-   * @param locator - Playwright locator for the element
-   * @param name - Human-readable name of the element
+   * Click with automatic Allure step logging.
+   * Playwright's built-in auto-waiting handles readiness — no manual waits needed.
    */
   protected async clickElement(locator: Locator, name: string) {
     await test.step(`Click on: "${name}"`, async () => {
-      await locator.waitFor({ state: 'visible' });
       await locator.click();
     });
   }
 
   /**
-   * Enhanced fill action with automatic logging for reporting
-   * @param locator - Playwright locator for the element
-   * @param value - Value to enter into the field
-   * @param name - Human-readable name of the field
+   * Fill a field with automatic Allure step logging.
    */
   protected async fillField(locator: Locator, value: string, name: string) {
     await test.step(`Fill "${name}" with: "${value}"`, async () => {
-      await locator.waitFor({ state: 'visible' });
       await locator.fill(value);
     });
   }
 
   /**
-   * Waits for the page to reach a stable state (network and DOM)
+   * Wait for the page to finish navigating by asserting a known stable locator.
+   * Prefer passing a locator that is always present on the destination page
+   * (e.g. a heading or nav element) over using networkidle, which is unreliable
+   * on SPAs and pages with background polling.
+   *
+   * Usage: await this.waitForReady(this.page.getByTestId('product-sort-container'));
    */
-  async waitForPageStability() {
-    await test.step('Waiting for page stability...', async () => {
-      await this.page.waitForLoadState('networkidle');
-      await this.page.waitForLoadState('domcontentloaded');
+  protected async waitForReady(stableLocator: Locator) {
+    await test.step('Waiting for page to be ready...', async () => {
+      await stableLocator.waitFor({ state: 'visible' });
     });
   }
 
   /**
-   * Authority Wrapper: Click with Retry
-   * Use this for stubborn elements that might not be ready for JS events
-   * even if they are visible.
-   */
-  protected async clickWithRetry(locator: Locator, name: string, retries = 3) {
-    await test.step(`Resilient click on: "${name}"`, async () => {
-      for (let i = 0; i < retries; i++) {
-        try {
-          await locator.click({ timeout: 3000 });
-          return;
-        } catch (error) {
-          if (i === retries - 1) throw error;
-          console.log(`Retrying click on ${name}... (${i + 1})`);
-        }
-      }
-    });
-  }
-
-  /**
-   * iFrame Helper
-   * Simplifies interaction with nested frames (e.g., Stripe, PayPal, Chatbots)
+   * iFrame Helper — simplifies interaction with nested frames (Stripe, PayPal, chatbots).
    */
   protected getFrame(selector: string): FrameLocator {
     return this.page.frameLocator(selector);
   }
 
   /**
-   * Shadow DOM Input Wrapper
-   * Playwright handles Shadow DOM automatically, but this ensures
-   * we handle it with our standard logging and waiting.
+   * Shadow DOM Input Wrapper — Playwright handles Shadow DOM automatically.
+   * This wrapper adds consistent Allure step logging.
    */
   protected async fillShadowField(selector: string, value: string, name: string) {
     await test.step(`Fill Shadow DOM field "${name}"`, async () => {
-      const field = this.page.locator(selector);
-      await field.fill(value);
+      await this.page.locator(selector).fill(value);
     });
   }
 
   /**
-   * Reliable Drag and Drop
-   * Essential for modern dashboards and Kanban boards.
+   * Reliable Drag and Drop — essential for Kanban boards and sortable lists.
    */
   protected async dragTo(source: Locator, target: Locator, name: string) {
     await test.step(`Dragging element: "${name}"`, async () => {

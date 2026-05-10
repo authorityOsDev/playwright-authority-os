@@ -1,12 +1,8 @@
-import { test, expect } from '@playwright/test';
-import { InventoryPage } from '@pages/inventory.page';
-import { ProductDetailPage } from '@pages/product-detail.page';
+import { test, expect } from '@fixtures/index';
 
 test.describe('Cart State Persistence', () => {
 
-  test('Should persist cart items after navigating back from product details', async ({ page }) => {
-    const inventoryPage = new InventoryPage(page);
-    const productDetailPage = new ProductDetailPage(page);
+  test('Should persist cart items after navigating back from product details', async ({ inventoryPage, productDetailPage }) => {
 
     // Arrange
     await inventoryPage.goto();

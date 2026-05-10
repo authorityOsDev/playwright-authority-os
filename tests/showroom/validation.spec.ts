@@ -1,12 +1,8 @@
-import { test, expect } from '@playwright/test';
-import { CartPage } from '@pages/cart.page';
-import { CheckoutPage } from '@pages/checkout.page';
+import { test, expect } from '@fixtures/index';
 
 test.describe('Checkout Validation', () => {
 
-  test('Should show error when checkout info is missing', async ({ page }) => {
-    const cartPage = new CartPage(page);
-    const checkoutPage = new CheckoutPage(page);
+  test('Should show error when checkout info is missing', async ({ cartPage, checkoutPage }) => {
 
     // Arrange — navigate to cart and proceed to checkout step
     await cartPage.goto();

@@ -1,15 +1,8 @@
-// Scenario: Multi-item Checkout — adds two products and completes the full purchase flow
-import { test, expect } from '@playwright/test';
-import { InventoryPage } from '@pages/inventory.page';
-import { CartPage } from '@pages/cart.page';
-import { CheckoutPage } from '@pages/checkout.page';
+import { test, expect } from '@fixtures/index';
 
 test.describe('E2E: Multi-item Checkout', { tag: '@smoke' }, () => {
 
-  test('Should complete checkout after adding Backpack and Bike Light to cart', async ({ page }) => {
-    const inventoryPage = new InventoryPage(page);
-    const cartPage = new CartPage(page);
-    const checkoutPage = new CheckoutPage(page);
+  test('Should complete checkout after adding Backpack and Bike Light to cart', async ({ inventoryPage, cartPage, checkoutPage }) => {
 
     // Arrange — navigate to inventory (auth handled via global setup)
     await inventoryPage.goto();
@@ -26,8 +19,8 @@ test.describe('E2E: Multi-item Checkout', { tag: '@smoke' }, () => {
     await cartPage.proceedToCheckout();
     await checkoutPage.fillCustomerInfo(
       process.env.CHECKOUT_FIRST_NAME ?? 'Jane',
-      process.env.CHECKOUT_LAST_NAME ?? 'Doe',
-      process.env.CHECKOUT_ZIP ?? '10001'
+      process.env.CHECKOUT_LAST_NAME  ?? 'Doe',
+      process.env.CHECKOUT_ZIP        ?? '10001'
     );
     await checkoutPage.finish();
 

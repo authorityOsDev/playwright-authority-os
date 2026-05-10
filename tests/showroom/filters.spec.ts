@@ -1,10 +1,8 @@
-import { test, expect } from '@playwright/test';
-import { InventoryPage } from '@pages/inventory.page';
+import { test, expect } from '@fixtures/index';
 
 test.describe('Inventory Sorting', () => {
 
-  test('Should sort products by price (Low to High)', async ({ page }) => {
-    const inventoryPage = new InventoryPage(page);
+  test('Should sort products by price (Low to High)', async ({ inventoryPage }) => {
 
     // Arrange
     await inventoryPage.goto();

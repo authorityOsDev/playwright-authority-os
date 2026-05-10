@@ -1,12 +1,10 @@
-import { test, expect } from '@playwright/test';
-import { EnvFactory } from '@utils/env-factory';
-import { ApiRequest } from '@utils/api.request';
-import { InventoryPage } from '@pages/inventory.page';
+import { test, expect } from '@fixtures/index';
+import { ApiRequest }   from '@utils/api.request';
+import { EnvFactory }   from '@utils/env-factory';
 
 test.describe('Hybrid Testing: API Setup + UI Verification', { tag: '@smoke' }, () => {
 
-  test('Should verify inventory consistency between API and UI', async ({ page }) => {
-    const inventoryPage = new InventoryPage(page);
+  test('Should verify inventory consistency between API and UI', async ({ inventoryPage }) => {
 
     // Arrange — API pre-check: confirm the target environment is reachable
     const response = await ApiRequest.get(EnvFactory.baseUrl);

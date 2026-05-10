@@ -12,7 +12,8 @@
     "paths": {
       "@pages/*": ["pages/*"],
       "@utils/*": ["utils/*"],
-      "@data/*": ["data/*"]
+      "@data/*": ["data/*"],
+      "@fixtures/*": ["fixtures/*"]
     },
     "types": ["node", "@playwright/test"],
   },
@@ -20,6 +21,7 @@
     "tests/**/*.ts",
     "pages/**/*.ts",
     "utils/**/*.ts",
+    "fixtures/**/*.ts",
     "data/**/*.ts",
     "*.ts"
   ],
