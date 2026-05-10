@@ -1,5 +1,7 @@
 # ⚡ Authority OS — AI-Native QA Framework
 
+> **[⬇ Get the full framework on Gumroad — €39](https://authorityos.gumroad.com/l/authority-os-playwright)**
+
 > **From Code to Board. Engineers see GitHub. Managers see Notion. AI keeps both in sync.**
 
 Authority OS is a production-grade Playwright framework that combines automated E2E testing, cross-browser CI/CD, live reporting, and a business intelligence dashboard — all wired together in a single system.

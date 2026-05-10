@@ -146,7 +146,7 @@ These 5 prompts are extracted from the **Authority OS AI QA Toolkit** — a comp
 - Live Allure report published on every push
 - ROI calculator that shows your team the business value of automation
 
-**Authority OS** — [Get the full toolkit]
+**Authority OS** — [Get the full toolkit](https://authorityos.gumroad.com/l/authority-os-playwright)
 
 ---
 
