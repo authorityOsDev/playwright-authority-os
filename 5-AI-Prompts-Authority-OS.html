@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>5 AI Prompts That Write Playwright Tests for You</title>
+  <style>
+    /* Default styles provided by pandoc.
+    ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+    */
+    html {
+      color: #1a1a1a;
+      background-color: #fdfdfd;
+    }
+    body {
+      margin: 0 auto;
+      max-width: 36em;
+      padding-left: 50px;
+      padding-right: 50px;
+      padding-top: 50px;
+      padding-bottom: 50px;
+      hyphens: auto;
+      overflow-wrap: break-word;
+      text-rendering: optimizeLegibility;
+      font-kerning: normal;
+    }
+    @media (max-width: 600px) {
+      body {
+        font-size: 0.9em;
+        padding: 12px;
+      }
+      h1 {
+        font-size: 1.8em;
+      }
+    }
+    @media print {
+      html {
+        background-color: white;
+      }
+      body {
+        background-color: transparent;
+        color: black;
+        font-size: 12pt;
+      }
+      p, h2, h3 {
+        orphans: 3;
+        widows: 3;
+      }
+      h2, h3, h4 {
+        page-break-after: avoid;
+      }
+    }
+    p {
+      margin: 1em 0;
+    }
+    a {
+      color: #1a1a1a;
+    }
+    a:visited {
+      color: #1a1a1a;
+    }
+    img {
+      max-width: 100%;
+    }
+    svg {
+      height: auto;
+      max-width: 100%;
+    }
+    h1, h2, h3, h4, h5, h6 {
+      margin-top: 1.4em;
+    }
+    h5, h6 {
+      font-size: 1em;
+      font-style: italic;
+    }
+    h6 {
+      font-weight: normal;
+    }
+    ol, ul {
+      padding-left: 1.7em;
+      margin-top: 1em;
+    }
+    li > ol, li > ul {
+      margin-top: 0;
+    }
+    blockquote {
+      margin: 1em 0 1em 1.7em;
+      padding-left: 1em;
+      border-left: 2px solid #e6e6e6;
+      color: #606060;
+    }
+    code {
+      white-space: pre-wrap;
+      font-family: Menlo, Monaco, Consolas, 'Lucida Console', monospace;
+      font-size: 85%;
+      margin: 0;
+      hyphens: manual;
+    }
+    pre {
+      margin: 1em 0;
+      overflow: auto;
+    }
+    pre code {
+      padding: 0;
+      overflow: visible;
+      overflow-wrap: normal;
+    }
+    .sourceCode {
+     background-color: transparent;
+     overflow: visible;
+    }
+    hr {
+      border: none;
+      border-top: 1px solid #1a1a1a;
+      height: 1px;
+      margin: 1em 0;
+    }
+    table {
+      margin: 1em 0;
+      border-collapse: collapse;
+      width: 100%;
+      overflow-x: auto;
+      display: block;
+      font-variant-numeric: lining-nums tabular-nums;
+    }
+    table caption {
+      margin-bottom: 0.75em;
+    }
+    tbody {
+      margin-top: 0.5em;
+      border-top: 1px solid #1a1a1a;
+      border-bottom: 1px solid #1a1a1a;
+    }
+    th {
+      border-top: 1px solid #1a1a1a;
+      padding: 0.25em 0.5em 0.25em 0.5em;
+    }
+    td {
+      padding: 0.125em 0.5em 0.25em 0.5em;
+    }
+    header {
+      margin-bottom: 4em;
+      text-align: center;
+    }
+    #TOC li {
+      list-style: none;
+    }
+    #TOC ul {
+      padding-left: 1.3em;
+    }
+    #TOC > ul {
+      padding-left: 0;
+    }
+    #TOC a:not(:hover) {
+      text-decoration: none;
+    }
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    /* The extra [class] is a hack that increases specificity enough to
+       override a similar rule in reveal.js */
+    ul.task-list[class]{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      font-size: inherit;
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1.6em;
+      vertical-align: middle;
+    }
+    .display.math{display: block; text-align: center; margin: 0.5rem auto;}
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">5 AI Prompts That Write Playwright Tests for You</h1>
+</header>
+<h1 id="ai-prompts-that-write-playwright-tests-for-you">5 AI Prompts
+That Write Playwright Tests for You</h1>
+<h3 id="free-resource-by-authority-os">Free Resource by Authority
+OS</h3>
+<blockquote>
+<p>Copy any prompt below, paste it into Claude, ChatGPT, or your AI of
+choice, fill in the bracketed sections, and get production-ready
+Playwright code in seconds.</p>
+</blockquote>
+<hr />
+<h2 id="prompt-1-generate-a-complete-e2e-test-from-a-user-story">Prompt
+1 — Generate a Complete E2E Test from a User Story</h2>
+<p>Use this when: you have a feature description and need a full test
+file immediately.</p>
+<pre><code>You are a Senior QA Automation Engineer using Playwright and TypeScript.
+
+I need an E2E test for this scenario:
+[DESCRIBE THE USER JOURNEY IN PLAIN ENGLISH]
+
+Requirements:
+- Use Page Object Model (separate locators from test logic)
+- Follow AAA pattern: Arrange, Act, Assert
+- Use web-first assertions (expect(locator).toBeVisible())
+- No hardcoded credentials — use process.env
+- Add @smoke tag if this is a critical business path
+
+Pages involved: [LIST THE PAGES, e.g. Login, Cart, Checkout]
+
+Return: the complete .spec.ts file and any Page Object updates needed.</code></pre>
+<p><strong>Example input:</strong> “User adds two items to cart, fills
+in checkout info, and sees the order confirmation page”</p>
+<p><strong>What you get:</strong> A complete spec file with imports,
+describe block, test steps, and assertions — ready to run.</p>
+<hr />
+<h2 id="prompt-2-fix-a-flaky-test-in-30-seconds">Prompt 2 — Fix a Flaky
+Test in 30 Seconds</h2>
+<p>Use this when: a test fails intermittently in CI and you can not
+reproduce it locally.</p>
+<pre><code>You are a Playwright expert diagnosing test flakiness.
+
+Here is my failing test:
+[PASTE YOUR TEST CODE]
+
+Here is the error from CI:
+[PASTE THE ERROR MESSAGE]
+
+Browser: [CHROME / FIREFOX / WEBKIT]
+
+Diagnose the root cause (race condition, timing issue, strict mode violation, etc.)
+and return the fixed test with a comment explaining what was wrong.</code></pre>
+<p><strong>What you get:</strong> Fixed code + explanation. Most flaky
+tests are caused by 3 things: missing <code>await</code>, asserting
+before the UI updates, or selectors that match multiple elements. The AI
+spots all three instantly.</p>
+<hr />
+<h2 id="prompt-3-create-a-page-object-from-an-html-snippet">Prompt 3 —
+Create a Page Object from an HTML Snippet</h2>
+<p>Use this when: you have a new page to test and need the Page Object
+class fast.</p>
+<pre><code>You are a QA Architect building a Playwright Page Object Model class.
+
+Here is the HTML (or description) of the page:
+[PASTE HTML SNIPPET OR DESCRIBE THE UI]
+
+Page name: [e.g. CheckoutPage]
+
+Requirements:
+- Class extends BasePage
+- Locator priority: getByRole &gt; getByTestId &gt; getByText &gt; getByLabel
+- No CSS selectors or XPath
+- Every method wrapped in test.step() for Allure logging
+- Include: constructor, goto(), and one method per user action
+
+Return the complete TypeScript class.</code></pre>
+<p><strong>What you get:</strong> A production-ready Page Object with
+correct locators, typed methods, and Allure step logging.</p>
+<hr />
+<h2 id="prompt-4-turn-a-bug-report-into-a-test">Prompt 4 — Turn a Bug
+Report into a Test</h2>
+<p>Use this when: QA or a user found a bug and you want to prevent
+regression.</p>
+<pre><code>You are a QA Engineer writing a regression test to prevent a bug from recurring.
+
+Bug report:
+Title: [BUG TITLE]
+Steps to reproduce: [NUMBERED STEPS]
+Expected: [WHAT SHOULD HAPPEN]
+Actual: [WHAT HAPPENS INSTEAD]
+
+Write a Playwright test that:
+1. Reproduces the exact bug scenario
+2. Asserts the FIXED behaviour (so the test passes when the bug is fixed)
+3. Has a comment referencing this bug: // Regression: [BUG ID]
+4. Uses Page Objects — no raw locators in the test file
+
+Return the complete test file.</code></pre>
+<p><strong>What you get:</strong> A regression test that permanently
+protects against this bug reappearing.</p>
+<hr />
+<h2 id="prompt-5-generate-a-smoke-suite-for-any-web-app">Prompt 5 —
+Generate a Smoke Suite for Any Web App</h2>
+<p>Use this when: you are starting a new project and need a smoke suite
+from scratch.</p>
+<pre><code>You are a QA Architect designing a smoke test suite.
+
+Application: [DESCRIBE THE APP IN 2-3 SENTENCES]
+Tech stack: [e.g. React, REST API, Postgres]
+Critical user journeys (must work for the business to function):
+1. [JOURNEY 1]
+2. [JOURNEY 2]
+3. [JOURNEY 3]
+
+Design a smoke suite that:
+- Runs in under 5 minutes
+- Covers every revenue-critical path
+- Uses @smoke tag on all tests
+- Follows AAA pattern
+- Uses Page Object Model
+
+Return: the smoke suite plan (table) + empty test shells ready to fill in.</code></pre>
+<p><strong>What you get:</strong> A prioritised smoke plan + empty spec
+files with the right structure — you just fill in the selectors.</p>
+<hr />
+<h2 id="want-the-full-toolkit">Want the Full Toolkit?</h2>
+<p>These 5 prompts are extracted from the <strong>Authority OS AI QA
+Toolkit</strong> — a complete framework with:</p>
+<ul>
+<li>15+ production-ready AI prompts</li>
+<li>Playwright + TypeScript framework (POM, cross-browser, CI/CD)</li>
+<li>Notion dashboard that auto-updates after every test run</li>
+<li>Live Allure report published on every push</li>
+<li>ROI calculator that shows your team the business value of
+automation</li>
+</ul>
+<p><strong>Authority OS</strong> — <a
+href="https://authorityos.gumroad.com/l/authority-os-playwright">Get the
+full toolkit</a></p>
+<hr />
+<p><em>Created by Authority OS Dev | authority.os.dev@gmail.com</em></p>
+</body>
+</html>
