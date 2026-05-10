@@ -52,7 +52,7 @@ test.describe('Product Detail Page', () => {
    * The snapshots folder is gitignored — each environment generates its own
    * baseline. Re-run with --update-snapshots after any intentional UI change.
    */
-  test('Should match product detail page visual snapshot', async ({ inventoryPage, productDetailPage, page }) => {
+  test('Should match product detail page visual snapshot', { tag: '@visual' }, async ({ inventoryPage, productDetailPage, page }) => {
 
     // Arrange
     await inventoryPage.goto();

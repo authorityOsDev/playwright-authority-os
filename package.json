@@ -14,7 +14,8 @@
     "lint": "eslint .",
     "report:notion": "npx ts-node utils/notion-update.ts",
     "test:json": "mkdir -p test-results && playwright test",
-    "ship-it": "npm run test:json && npm run report:notion"
+    "ship-it": "npm run test:json && npm run report:notion",
+    "test:visual": "playwright test --grep @visual --update-snapshots"
   },
   "keywords": [
     "playwright",
