@@ -134,12 +134,13 @@ npm run ship-it
 | Inventory | 2 | @smoke | High / Medium |
 | Hybrid API-UI | 1 | @smoke | High |
 | API Layer Health | 3 | @smoke | High |
+| Product Detail | 2 | — | High |
 | Filters | 1 | — | Medium |
 | Cart Persistence | 1 | — | High |
 | Checkout (single) | 1 | — | High |
 | Checkout (multi-item) | 1 | @smoke | High |
 | Validation | 1 | — | Medium |
-| **Total** | **15 scenarios / 45 runs** | | **8 High, 5 Medium** |
+| **Total** | **17 scenarios / 51 runs** | | **10 High, 5 Medium** |
 
 ---
 

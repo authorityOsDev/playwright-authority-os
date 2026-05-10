@@ -92,7 +92,7 @@ Login is expensive. Authority OS runs it **once** per test suite execution:
 └─────────────────┘
 ```
 
-**Result:** Login UI is skipped for all 45 test executions (15 tests × 3 browsers). ~10 seconds saved per test = **~7.5 minutes saved per full run**.
+**Result:** Login UI is skipped for all 51 test executions (17 tests × 3 browsers). ~10 seconds saved per test = **~8.5 minutes saved per full run**.
 
 ---
 
@@ -125,7 +125,7 @@ push to main
 │           test (matrix)            │
 │  chromium  │  firefox  │  webkit   │  ← parallel
 │  auth →    │  auth →   │  auth →   │
-│  15 tests  │  15 tests │  15 tests │
+│  17 tests  │  17 tests │  17 tests │
 └───────┬────────────────────────────┘
         │ all pass (fail-fast: false)
         ↓
