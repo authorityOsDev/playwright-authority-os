@@ -34,6 +34,7 @@ const tests = [
   { name: 'GET / — response contains expected HTML content-type',          feature: 'Hybrid / API',   priority: 'Medium',   businessValue: 'Medium', note: 'Protocol integrity — detects misconfigured CDN or proxy' },
   { name: 'Should display correct product name and price',                  feature: 'Product Detail', priority: 'High',     businessValue: 'High',   note: 'Catalog accuracy — wrong price = wrong sale' },
   { name: 'Should add and remove product directly from detail page',        feature: 'Product Detail', priority: 'High',     businessValue: 'High',   note: 'Cart flow — alternative entry point to checkout' },
+  { name: 'Should match product detail page visual snapshot',               feature: 'Product Detail', priority: 'Medium',   businessValue: 'Medium', note: 'Visual regression — detects unintended UI changes on product page' },
 ];
 
 async function seed() {

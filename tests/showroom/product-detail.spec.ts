@@ -43,11 +43,14 @@ test.describe('Product Detail Page', () => {
    * Captures a screenshot of the product detail page and compares it against
    * a stored baseline. Fails if the UI changes unexpectedly.
    *
-   * First run: generates the baseline in tests/showroom/__snapshots__/
-   * Subsequent runs: compares against the baseline pixel-by-pixel.
-   *
-   * To update the baseline after an intentional UI change:
+   * SETUP (run once per machine/environment before this test will pass):
    *   npx playwright test product-detail --update-snapshots
+   *
+   * This generates a platform-specific baseline in:
+   *   tests/showroom/product-detail.spec.ts-snapshots/
+   *
+   * The snapshots folder is gitignored — each environment generates its own
+   * baseline. Re-run with --update-snapshots after any intentional UI change.
    */
   test('Should match product detail page visual snapshot', async ({ inventoryPage, productDetailPage, page }) => {
 
