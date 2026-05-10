@@ -110,7 +110,10 @@ jobs:
       - name: Deploy Allure report to Surge
         run: |
           npm install -g surge
-          surge ./allure-report https://authority-os-report.surge.sh --token ${{ secrets.SURGE_TOKEN }}
+          surge ./allure-report ${{ vars.ALLURE_REPORT_URL || 'https://your-project.surge.sh' }} --token ${{ secrets.SURGE_TOKEN }} || {
+            echo "⚠️  Surge deploy failed — check SURGE_TOKEN secret and ALLURE_REPORT_URL variable"
+            exit 1
+          }
 
       - name: Download test results JSON
         uses: actions/download-artifact@v4
@@ -122,8 +125,13 @@ jobs:
         env:
           NOTION_TOKEN: ${{ secrets.NOTION_TOKEN }}
           NOTION_DATABASE_ID: ${{ secrets.NOTION_DATABASE_ID }}
+          ALLURE_REPORT_URL: ${{ vars.ALLURE_REPORT_URL || 'https://your-project.surge.sh' }}
           GITHUB_RUN_NUMBER: ${{ github.run_number }}
           GITHUB_RUN_ID: ${{ github.run_id }}
           GITHUB_REPOSITORY: ${{ github.repository }}
           GITHUB_SERVER_URL: ${{ github.server_url }}
-        run: npx ts-node utils/notion-update.ts
+        run: |
+          npx ts-node utils/notion-update.ts || {
+            echo "⚠️  Notion update failed — check NOTION_TOKEN and NOTION_DATABASE_ID secrets"
+            exit 1
+          }

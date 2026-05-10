@@ -9,7 +9,7 @@ Authority OS is built on four principles:
 | Principle | Implementation |
 |---|---|
 | **Isolation** | Each test is independent — no shared state between tests |
-| **Resilience** | Web-first assertions, smart retries, session reuse |
+| **Resilience** | Web-first assertions, Playwright auto-waiting, session reuse |
 | **Observability** | Every action logged via test.step(), Allure steps, Notion updates |
 | **Separation of concerns** | UI logic in Page Objects, business logic in tests, config in factories |
 
@@ -32,16 +32,46 @@ test.step() → logged in Allure + Playwright trace
 **BasePage provides:**
 - `clickElement(locator, label)` — click with step logging
 - `fillField(locator, value, label)` — fill with step logging
-- `clickWithRetry(locator, label)` — retry on failure
-- `dragTo(source, target)` — drag and drop with logging
-- `getFrame(name)` — iframe access
-- `fillShadowField(selector, value)` — shadow DOM support
+- `waitForReady(stableLocator)` — wait for a known stable element before asserting
+- `dragTo(source, target, label)` — drag and drop with logging
+- `getFrame(selector)` — iframe access
+- `fillShadowField(selector, value, label)` — shadow DOM support
+
+Playwright's built-in auto-waiting handles element readiness — no manual retry loops or `waitForLoadState('networkidle')` needed.
 
 This means every test automatically produces a structured Allure report with named steps — no extra annotation needed.
 
 ---
 
-## 3. Authentication Strategy
+## 3. Fixtures
+
+Authority OS uses Playwright's `test.extend()` to inject pre-instantiated Page Objects directly into test function signatures — eliminating the boilerplate of `new PageName(page)` in every test.
+
+```typescript
+// fixtures/index.ts
+export const test = base.extend<PageFixtures>({
+  inventoryPage: async ({ page }, use) => { await use(new InventoryPage(page)); },
+  cartPage:      async ({ page }, use) => { await use(new CartPage(page)); },
+  // ...
+});
+```
+
+Usage in tests:
+```typescript
+import { test, expect } from '@fixtures/index';
+
+test('checkout flow', async ({ inventoryPage, cartPage, checkoutPage }) => {
+  await inventoryPage.goto();
+  await inventoryPage.addItemToCart('Sauce Labs Backpack');
+  // ...
+});
+```
+
+Every test gets fresh, typed page objects. No setup boilerplate. No shared state between tests.
+
+---
+
+## 4. Authentication Strategy
 
 Login is expensive. Authority OS runs it **once** per test suite execution:
 
@@ -62,11 +92,11 @@ Login is expensive. Authority OS runs it **once** per test suite execution:
 └─────────────────┘
 ```
 
-**Result:** Login UI is skipped for all 37 test executions. ~10-15 seconds saved per test = ~6 minutes per full run.
+**Result:** Login UI is skipped for all 45 test executions (15 tests × 3 browsers). ~10 seconds saved per test = **~7.5 minutes saved per full run**.
 
 ---
 
-## 4. Configuration: testIdAttribute
+## 5. Configuration: testIdAttribute
 
 saucedemo uses `data-test` attributes, not Playwright's default `data-testid`. A single config line fixes all `getByTestId()` calls globally:
 
@@ -81,7 +111,7 @@ This means `page.getByTestId('checkout')` maps to `[data-test="checkout"]` — n
 
 ---
 
-## 5. CI/CD Pipeline Architecture
+## 6. CI/CD Pipeline Architecture
 
 ```
 push to main
@@ -95,7 +125,7 @@ push to main
 │           test (matrix)            │
 │  chromium  │  firefox  │  webkit   │  ← parallel
 │  auth →    │  auth →   │  auth →   │
-│  37 tests  │  37 tests │  37 tests │
+│  15 tests  │  15 tests │  15 tests │
 └───────┬────────────────────────────┘
         │ all pass (fail-fast: false)
         ↓
@@ -111,10 +141,11 @@ push to main
 - `fail-fast: false` — all browsers run even if one fails, giving full picture
 - `retries: 2` in CI — handles transient network issues without false failures
 - Notion update runs in `publish` job — fires once with combined results, not 3 times
+- Both Surge and Notion steps fail loudly (`exit 1`) if something goes wrong
 
 ---
 
-## 6. Environment Factory
+## 7. Environment Factory
 
 Tests never hardcode URLs or credentials:
 
@@ -122,12 +153,11 @@ Tests never hardcode URLs or credentials:
 // utils/env-factory.ts
 export class EnvFactory {
   static get baseUrl(): string {
-    const env = process.env.ENV || 'staging';
-    const urls = {
-      staging: process.env.BASE_URL || 'https://www.saucedemo.com',
-      prod:    process.env.PROD_URL  || 'https://www.saucedemo.com',
-    };
-    return urls[env] ?? urls.staging;
+    if (process.env.BASE_URL) return process.env.BASE_URL;
+    switch ((process.env.ENV || 'staging').toLowerCase()) {
+      case 'prod': return 'https://www.saucedemo.com';
+      default:     return 'https://www.saucedemo.com';
+    }
   }
 }
 ```
@@ -140,7 +170,7 @@ ENV=staging npm run test:smoke
 
 ---
 
-## 7. Notion Integration Bridge
+## 8. Notion Integration Bridge
 
 After every CI run, `utils/notion-update.ts` reads `test-results/results.json` and writes to the Notion CI Run History database:
 
@@ -152,21 +182,22 @@ notion-update.ts calculates:
   - passedTests = expected
   - status = unexpected === 0 ? 'Passed' : 'Failed'
   - durationSec = duration / 1000
+  - reportLink = process.env.ALLURE_REPORT_URL
          ↓
 Notion API → pages.create() → CI Run History database
   - Scenario: "Build #42 — Passed"
   - Status: Passed
-  - Total Tests: 37
-  - Passed: 37
-  - Success Rate: 100% (Notion formula)
+  - Total Tests: 12
+  - Passed: 12
+  - Success Rate: 100% (Notion formula: prop("Passed") / prop("Total Tests"))
   - Duration (s): 16
-  - Report Link: https://authority-os-report.surge.sh
-  - Run Date: 2026-04-19T20:10:00Z
+  - Report Link: https://your-project.surge.sh
+  - Run Date: 2026-05-10T10:00:00Z
 ```
 
 ---
 
-## 8. Reporter Stack
+## 9. Reporter Stack
 
 Each test run produces three outputs simultaneously:
 
@@ -178,32 +209,41 @@ Each test run produces three outputs simultaneously:
 
 ---
 
-## 9. Path Aliases
+## 10. Path Aliases
 
 All imports use TypeScript path aliases — no relative path hell:
 
 ```typescript
-import { CheckoutPage } from '@pages/checkout.page';
-import { EnvFactory }   from '@utils/env-factory';
-import testData         from '@data/users.json';
+import { test, expect }  from '@fixtures/index';
+import { CheckoutPage }  from '@pages/checkout.page';
+import { EnvFactory }    from '@utils/env-factory';
+import testData          from '@data/users.json';
 ```
 
 Configured in `tsconfig.json`:
 ```json
 "paths": {
-  "@pages/*": ["pages/*"],
-  "@utils/*": ["utils/*"],
-  "@data/*":  ["data/*"]
+  "@fixtures/*": ["fixtures/*"],
+  "@pages/*":    ["pages/*"],
+  "@utils/*":    ["utils/*"],
+  "@data/*":     ["data/*"]
 }
 ```
 
 ---
 
-## 10. AI Integration
+## 11. AI Integration
 
-`.authority/prompts/` contains two prompt templates:
+`.authority/prompts/` contains 15 prompt templates organized by task:
 
-- **`page-object-creator.md`** — provide a URL and element descriptions, get a complete Page Object
-- **`test-generator.md`** — provide a scenario description, get a complete spec file following AAA pattern
+| Category | Prompts |
+|---|---|
+| **Core** | `test-generator.md`, `page-object-creator.md` |
+| **Debugging** | `debug-flaky-test.md`, `test-fixer.md` |
+| **Planning** | `smoke-suite-planner.md`, `e2e-scenario-planner.md`, `coverage-gap-analyzer.md` |
+| **API & Data** | `api-test-generator.md`, `test-data-factory.md` |
+| **Advanced** | `accessibility-test-generator.md`, `ci-pipeline-generator.md` |
+| **Reporting** | `bug-report-generator.md`, `notion-report-generator.md` |
+| **Refactoring** | `test-refactor.md`, `environment-setup-generator.md` |
 
 `CLAUDE.md` at the project root instructs Claude Code on architecture rules, naming conventions, and forbidden patterns — ensuring AI-generated code is always compliant with Authority OS standards.

@@ -11,7 +11,7 @@
 import { test, expect } from '@playwright/test';
 import { EnvFactory }   from '@utils/env-factory';
 
-test.describe('API Layer: Environment Health', () => {
+test.describe('API Layer: Environment Health', { tag: '@smoke' }, () => {
 
   test('GET / — application responds with HTTP 200', async ({ request }) => {
     const response = await request.get(EnvFactory.baseUrl);

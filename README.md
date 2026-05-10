@@ -132,24 +132,38 @@ npm run ship-it
 |---|---|---|---|
 | Authentication | 3 | @smoke | High |
 | Inventory | 2 | @smoke | High / Medium |
-| Hybrid API-UI | 2 | @smoke | High / Medium |
+| Hybrid API-UI | 1 | @smoke | High |
+| API Layer Health | 3 | @smoke | High |
 | Filters | 1 | — | Medium |
 | Cart Persistence | 1 | — | High |
 | Checkout (single) | 1 | — | High |
 | Checkout (multi-item) | 1 | @smoke | High |
 | Validation | 1 | — | Medium |
-| **Total** | **12 scenarios / 37 runs** | | **7 High, 5 Medium** |
+| **Total** | **15 scenarios / 45 runs** | | **8 High, 5 Medium** |
 
 ---
 
 ## 🤖 AI Prompt Library
 
-Located in `.authority/prompts/`:
+15 ready-made prompts in `.authority/prompts/`. Paste any into Claude, ChatGPT, or your AI of choice:
 
 | Prompt | Use |
 |---|---|
-| `page-object-creator.md` | Generate a new Page Object for any UI component |
 | `test-generator.md` | Generate a complete test file from a scenario description |
+| `page-object-creator.md` | Generate a Page Object + fixture registration from HTML |
+| `debug-flaky-test.md` | Diagnose and fix intermittently failing tests |
+| `test-fixer.md` | Fix broken tests from error messages |
+| `smoke-suite-planner.md` | Design a smoke suite for any web application |
+| `e2e-scenario-planner.md` | Plan full E2E coverage from user stories |
+| `coverage-gap-analyzer.md` | Find untested critical paths |
+| `api-test-generator.md` | Generate API layer tests |
+| `test-data-factory.md` | Generate test data with edge cases |
+| `accessibility-test-generator.md` | Generate WCAG 2.1 AA accessibility tests |
+| `ci-pipeline-generator.md` | Generate GitHub Actions pipeline config |
+| `bug-report-generator.md` | Turn a bug report into a regression test |
+| `notion-report-generator.md` | Generate stakeholder-ready test reports |
+| `test-refactor.md` | Refactor legacy tests to Authority OS patterns |
+| `environment-setup-generator.md` | Generate full environment config for a new project |
 
 ---
 
