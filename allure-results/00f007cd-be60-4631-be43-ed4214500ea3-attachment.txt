@@ -1,4 +1,0 @@
-
---- Starting Global Teardown ---
-🗑️ Deleted session state at: /Users/norbertpulik/Desktop/Automation/playwright-authority-os/.auth/user.json
-✅ Global Teardown complete.
