@@ -11,7 +11,8 @@ Authority OS is a production-grade Playwright framework that combines automated 
 | Resource | Link |
 |---|---|
 | 📊 Live Allure Report | [authority-os-report.surge.sh](https://authority-os-report.surge.sh) |
-| 🧠 Notion Command Center | [Authority OS — Command Center](https://www.notion.so/Authority-OS-Command-Center) |
+| 🧠 Notion Command Center | [Authority OS — Command Center](https://sleepy-frown-fd6.notion.site/Authority-OS-Command-Center-347d9a6c570d8026a9bad41013357a68) |
+| 📋 Notion Template | [Duplicate to your workspace →](https://sleepy-frown-fd6.notion.site/Authority-OS-Command-Center-347d9a6c570d8026a9bad41013357a68?source=copy_link) |
 | ⚙️ CI/CD Pipeline | [GitHub Actions](https://github.com/authorityOsDev/playwright-authority-os/actions) |
 
 ---
@@ -104,7 +105,8 @@ npm install
 
 # 2. Configure environment
 cp .env.example .env
-# Fill in BASE_URL, STANDARD_USER, PASSWORD, NOTION_TOKEN, NOTION_DATABASE_ID
+# Fill in BASE_URL, STANDARD_USER, PASSWORD, NOTION_TOKEN, NOTION_DATABASE_ID, ALLURE_REPORT_URL
+# Notion dashboard template: https://sleepy-frown-fd6.notion.site/Authority-OS-Command-Center-347d9a6c570d8026a9bad41013357a68?source=copy_link
 
 # 3. Install browsers
 npx playwright install
@@ -155,7 +157,8 @@ Located in `.authority/prompts/`:
 
 - [Architecture Guide](ARCHITECTURE.md) — engineering principles, patterns, decisions
 - [Deployment Guide](DEPLOYMENT.md) — CI/CD setup, GitHub Secrets, Surge, Notion
-- [Notion Command Center](https://www.notion.so/Authority-OS-Command-Center) — live business dashboard
+- [Notion Command Center](https://sleepy-frown-fd6.notion.site/Authority-OS-Command-Center-347d9a6c570d8026a9bad41013357a68) — live business dashboard
+- [Notion Template](https://sleepy-frown-fd6.notion.site/Authority-OS-Command-Center-347d9a6c570d8026a9bad41013357a68?source=copy_link) — duplicate to your workspace in one click
 
 ---
 

@@ -100,7 +100,16 @@ Watch it at: `https://github.com/YOUR_USERNAME/YOUR_REPO/actions`
 
 ---
 
-## Part 3 — Notion Dashboard Setup (5 min)
+## Part 3 — Notion Dashboard Setup (2 min with template)
+
+### Option A — Use the template (recommended)
+
+1. Open the template: [Authority OS — Command Center](https://sleepy-frown-fd6.notion.site/Authority-OS-Command-Center-347d9a6c570d8026a9bad41013357a68?source=copy_link)
+2. Click **Duplicate** (top right) — the full dashboard copies to your workspace
+3. Follow Step 1 below to create an integration and connect it to your duplicated database
+4. Copy your database ID from the URL and add it to `.env`
+
+### Option B — Build from scratch
 
 ### Step 1 — Create a Notion integration
 
