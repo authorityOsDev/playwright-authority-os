@@ -8,13 +8,12 @@ setup('authenticate', async ({ page }) => {
   await loginPage.goto();
   await loginPage.login(process.env.STANDARD_USER!, process.env.PASSWORD!);
 
-  // AUTHORITY RULE: Wait for a specific element that proves login is finished
-  // URL reaching /inventory.html is the canonical proof of successful authentication
+  // AUTHORITY RULE: Assert on specific elements that prove login is complete.
+  // URL + visible sort container are the canonical proof of successful authentication.
+  // Do NOT use waitForLoadState('networkidle') — it is unreliable on SPAs and pages
+  // with background polling, and these two assertions already guarantee readiness.
   await expect(page).toHaveURL(/inventory\.html/, { timeout: 10000 });
   await expect(page.getByTestId('product-sort-container')).toBeVisible();
-
-  // Wait for network to be completely quiet
-  await page.waitForLoadState('networkidle');
 
   // Save state to the EXACT path defined in config
   await page.context().storageState({ path: STORAGE_STATE });

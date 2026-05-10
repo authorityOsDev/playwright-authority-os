@@ -28,7 +28,7 @@ async function updateNotion() {
     ? `#${process.env.GITHUB_RUN_NUMBER}`
     : `Local ${runDate.toISOString().slice(0, 16).replace('T', ' ')}`;
   const scenarioTitle = `Build ${buildId} — ${status}`;
-  const reportLink = 'https://authority-os-report.surge.sh';
+  const reportLink = process.env.ALLURE_REPORT_URL ?? 'https://your-project.surge.sh';
 
   // Step 1 — write core properties (always required)
   const page = await notion.pages.create({
