@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import { test as setup, expect } from '@playwright/test';
 import { LoginPage } from '@pages/login.page';
 import { STORAGE_STATE } from '../playwright.config'; // Import the path from config

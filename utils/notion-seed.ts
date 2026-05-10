@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import { Client } from '@notionhq/client';
 import * as dotenv from 'dotenv';
 
@@ -29,6 +30,10 @@ const tests = [
   { name: 'Should complete checkout after adding Backpack and Bike Light', feature: 'Checkout',       priority: 'Critical', businessValue: 'High',   note: 'Upsell flow — higher order value transactions' },
   { name: 'Should show error when checkout info is missing',               feature: 'Validation',     priority: 'Medium',   businessValue: 'Medium', note: 'UX guard — prevents bad data reaching order processing' },
   { name: 'GET / — application responds with HTTP 200',                    feature: 'Hybrid / API',   priority: 'High',     businessValue: 'High',   note: 'Environment health — first signal of any outage' },
+  { name: 'GET / — response time is under 3 seconds',                      feature: 'Hybrid / API',   priority: 'High',     businessValue: 'High',   note: 'Performance baseline — SLA health check on every run' },
+  { name: 'GET / — response contains expected HTML content-type',          feature: 'Hybrid / API',   priority: 'Medium',   businessValue: 'Medium', note: 'Protocol integrity — detects misconfigured CDN or proxy' },
+  { name: 'Should display correct product name and price',                  feature: 'Product Detail', priority: 'High',     businessValue: 'High',   note: 'Catalog accuracy — wrong price = wrong sale' },
+  { name: 'Should add and remove product directly from detail page',        feature: 'Product Detail', priority: 'High',     businessValue: 'High',   note: 'Cart flow — alternative entry point to checkout' },
 ];
 
 async function seed() {

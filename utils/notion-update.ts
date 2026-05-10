@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import { Client } from '@notionhq/client';
 import * as fs from 'fs';
 import * as path from 'path';
@@ -5,7 +6,7 @@ import * as dotenv from 'dotenv';
 
 dotenv.config();
 
-const notion = new Client({ auth: process.env.NOTION_TOKEN });
+const notion     = new Client({ auth: process.env.NOTION_TOKEN });
 const databaseId = process.env.NOTION_DATABASE_ID as string;
 
 async function updateNotion() {
@@ -19,18 +20,18 @@ async function updateNotion() {
 
   const results = JSON.parse(fs.readFileSync(resultsPath, 'utf-8'));
 
-  const totalTests = results.stats.expected + results.stats.unexpected + results.stats.flaky;
-  const passedTests = results.stats.expected;
-  const durationSec = Math.round((results.stats.duration ?? 0) / 1000);
-  const status = results.stats.unexpected === 0 ? 'Passed' : 'Failed';
-  const runDate = new Date();
-  const buildId = process.env.GITHUB_RUN_NUMBER
+  const totalTests   = results.stats.expected + results.stats.unexpected + results.stats.flaky;
+  const passedTests  = results.stats.expected;
+  const durationSec  = Math.round((results.stats.duration ?? 0) / 1000);
+  const status       = results.stats.unexpected === 0 ? 'Passed' : 'Failed';
+  const runDate      = new Date();
+  const buildId      = process.env.GITHUB_RUN_NUMBER
     ? `#${process.env.GITHUB_RUN_NUMBER}`
     : `Local ${runDate.toISOString().slice(0, 16).replace('T', ' ')}`;
   const scenarioTitle = `Build ${buildId} — ${status}`;
-  const reportLink = process.env.ALLURE_REPORT_URL ?? 'https://your-project.surge.sh';
+  const reportLink    = process.env.ALLURE_REPORT_URL ?? 'https://your-project.surge.sh';
 
-  // Step 1 — write core properties (always required)
+  // Step 1 — write core properties
   const page = await notion.pages.create({
     parent: { database_id: databaseId },
     properties: {
@@ -43,13 +44,11 @@ async function updateNotion() {
     },
   });
 
-  // Step 2 — write Duration (optional, skipped if column not accessible)
+  // Step 2 — Duration (optional, skipped if column not accessible in this view)
   try {
     await notion.pages.update({
       page_id: page.id,
-      properties: {
-        'Duration (s)': { number: durationSec },
-      },
+      properties: { 'Duration (s)': { number: durationSec } },
     });
   } catch {
     console.warn('⚠️  Duration column not found — skipping.');
@@ -58,7 +57,8 @@ async function updateNotion() {
   console.log(`✅ Notion: run logged — ${scenarioTitle}`);
 }
 
-updateNotion().catch((error: any) => {
-  console.error('❌ Notion update failed:', error.body || error.message || error);
+updateNotion().catch((error: unknown) => {
+  const msg = error instanceof Error ? error.message : String(error);
+  console.error('❌ Notion update failed:', msg);
   process.exit(1);
 });
