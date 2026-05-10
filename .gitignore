@@ -1,8 +1,16 @@
 
+# Environment — never commit real secrets
+.env
+.env.local
+.env.*.local
+
+# Auth session — auto-generated, auto-deleted
+.auth/
+
 # Playwright
 node_modules/
 /test-results/
 /playwright-report/
 /blob-report/
 /playwright/.cache/
-/playwright/.auth/
+/allure-report/
